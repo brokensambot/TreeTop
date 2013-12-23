@@ -23,26 +23,6 @@ void setup() {
 }
 
 void loop() {
-  knightRiderShow();
-}
-
-void knightRiderShow() {
-  DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
-                         OffState, OffState, OffState, OffState, OffState,
-                         OffState, OffState, OffState, OffState, OffState,
-                         OffState, OffState, OffState, OffState, OffState,
-                         OffState, OffState, OffState, OffState, OffState };
-  
-  for ( int i = 0; i < diodeCount; ++i ) {
-    state[i] = OnState;
-    displayStateForDuration(state, 50);
-    state[i] = OffState;
-  }
-  for ( int i = diodeCount - 1; i >= 0; --i ) {
-    state[i] = OnState;
-    displayStateForDuration(state, 50);
-    state[i] = OffState;
-  }
 }
 
 void initializeDiodes() {
