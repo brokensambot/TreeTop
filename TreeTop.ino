@@ -23,6 +23,38 @@ void setup() {
 }
 
 void loop() {
+  zipUnzip();
+}
+
+void zipUnzip() {
+  DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState };
+  // Zip unzip forward direction.
+  for ( int i = 0; i < diodeCount; ++i ) {
+    state[i] = OnState;
+    displayStateForDuration(state, 65);
+  }
+  for ( int i = diodeCount - 1; i >= 0; --i ) {
+    state[i] = OffState;
+    displayStateForDuration(state, 65);
+  }
+  // Zip unzip backward direction.
+  state[0] = OnState;
+  displayStateForDuration(state, 65);
+  for ( int i = diodeCount - 1; i >= 0; --i ) {
+    state[i] = OnState;
+    displayStateForDuration(state, 65);
+  }
+  for ( int i = 1; i < diodeCount; ++i ) {
+    state[i] = OffState;
+    displayStateForDuration(state, 65);
+  }
+  state[0] = OffState;
+  displayStateForDuration(state, 65);
 }
 
 void initializeDiodes() {
