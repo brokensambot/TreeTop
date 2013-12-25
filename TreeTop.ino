@@ -23,8 +23,32 @@ void setup() {
 }
 
 void loop() {
+  paintAnimation();
   warpAnimation(200);
   zipUnzipAnimation();
+}
+
+void paintAnimation() {
+  DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState };
+  
+  // Turn top center light on.
+  state[0] = OnState;
+  displayStateForDuration(state, 60);
+  
+  for ( int i = 1; i < (diodeCount / 2); ++i ) {
+    state[i] = OnState;
+    state[diodeCount - i] = OnState;
+    displayStateForDuration(state, 60);
+  }
+  
+  // Turn bottom center light on.
+  state[15] = OnState;
+  displayStateForDuration(state, 60);
 }
 
 void warpAnimation(unsigned long duration) {
@@ -83,9 +107,15 @@ void warpAnimation(unsigned long duration) {
   for ( byte i = 0; i < diodeCount; i += 6)
     state[i] = OffState;
   
-  // Repeat animation if necessary.
+  // Repeat or end animation.
   if ( duration > 10 ) {
     warpAnimation(duration - 10);
+  } else {
+    // Turn everything on.
+    for ( byte i = 0; i < diodeCount; ++i )
+      state[i] = OnState;
+    
+    displayStateForDuration(state, 100);
   }
 }
 
@@ -99,32 +129,32 @@ void zipUnzipAnimation() {
   
   // Turn top light on.
   state[0] = OnState;
-  displayStateForDuration(state, 50);
+  displayStateForDuration(state, 60);
   
   // Zip clockwise.
   for ( int i = 1; i < diodeCount; ++i ) {
     state[i] = OnState;
-    displayStateForDuration(state, 50);
+    displayStateForDuration(state, 60);
   }
   // Unzip clockwise.
   for ( int i = diodeCount - 1; i > 0; --i ) {
     state[i] = OffState;
-    displayStateForDuration(state, 50);
+    displayStateForDuration(state, 60);
   }
   // Zip counterclockwise.
   for ( int i = diodeCount - 1; i > 0; --i ) {
     state[i] = OnState;
-    displayStateForDuration(state, 50);
+    displayStateForDuration(state, 60);
   }
   // Unzip counterclockwise.
   for ( int i = 1; i < diodeCount; ++i ) {
     state[i] = OffState;
-    displayStateForDuration(state, 50);
+    displayStateForDuration(state, 60);
   }
   
   // Turn top light off.
   state[0] = OffState;
-  displayStateForDuration(state, 50);
+  displayStateForDuration(state, 60);
 }
 
 void initializeDiodes() {
