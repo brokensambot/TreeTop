@@ -23,38 +23,108 @@ void setup() {
 }
 
 void loop() {
-  zipUnzip();
+  warpAnimation(200);
+  zipUnzipAnimation();
 }
 
-void zipUnzip() {
+void warpAnimation(unsigned long duration) {
   DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
                          OffState, OffState, OffState, OffState, OffState,
                          OffState, OffState, OffState, OffState, OffState,
                          OffState, OffState, OffState, OffState, OffState,
                          OffState, OffState, OffState, OffState, OffState,
                          OffState, OffState, OffState, OffState, OffState };
-  // Zip unzip forward direction.
-  for ( int i = 0; i < diodeCount; ++i ) {
+  
+  // Turn center ring on.
+  for ( byte i = 3; i < diodeCount; i += 6 )
     state[i] = OnState;
-    displayStateForDuration(state, 65);
-  }
-  for ( int i = diodeCount - 1; i >= 0; --i ) {
+  
+  displayStateForDuration(state, duration);
+  
+  // Turn center ring off.
+  for ( byte i = 3; i < diodeCount; i += 6 )
     state[i] = OffState;
-    displayStateForDuration(state, 65);
+  
+  // Turn first ring on.
+  for ( byte i = 2; i < diodeCount; i += 2 ) {
+    if ( i % 6 != 0 )
+      state[i] = OnState;
   }
-  // Zip unzip backward direction.
-  state[0] = OnState;
-  displayStateForDuration(state, 65);
-  for ( int i = diodeCount - 1; i >= 0; --i ) {
+  
+  displayStateForDuration(state, duration);
+  
+  // Turn first ring off.
+  for ( byte i = 2; i < diodeCount; i += 2 ) {
+    if ( i % 6 != 0 )
+      state[i] = OffState;
+  }
+  
+  // Turn second ring on.
+  for ( byte i = 1; i < diodeCount; i += 2 ) {
+    if ( i % 3 != 0 )
+      state[i] = OnState;
+  }
+  
+  displayStateForDuration(state, duration);
+  
+  // Turn second ring off.
+  for ( byte i = 1; i < diodeCount; i += 2 ) {
+    if ( i % 3 != 0 )
+      state[i] = OffState;
+  }
+  
+  // Turn tips on.
+  for ( byte i = 0; i < diodeCount; i += 6)
     state[i] = OnState;
-    displayStateForDuration(state, 65);
+  
+  displayStateForDuration(state, duration);
+  
+  // Turn tips off.
+  for ( byte i = 0; i < diodeCount; i += 6)
+    state[i] = OffState;
+  
+  // Repeat animation if necessary.
+  if ( duration > 10 ) {
+    warpAnimation(duration - 10);
   }
+}
+
+void zipUnzipAnimation() {
+  DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState };
+  
+  // Turn top light on.
+  state[0] = OnState;
+  displayStateForDuration(state, 50);
+  
+  // Zip clockwise.
+  for ( int i = 1; i < diodeCount; ++i ) {
+    state[i] = OnState;
+    displayStateForDuration(state, 50);
+  }
+  // Unzip clockwise.
+  for ( int i = diodeCount - 1; i > 0; --i ) {
+    state[i] = OffState;
+    displayStateForDuration(state, 50);
+  }
+  // Zip counterclockwise.
+  for ( int i = diodeCount - 1; i > 0; --i ) {
+    state[i] = OnState;
+    displayStateForDuration(state, 50);
+  }
+  // Unzip counterclockwise.
   for ( int i = 1; i < diodeCount; ++i ) {
     state[i] = OffState;
-    displayStateForDuration(state, 65);
+    displayStateForDuration(state, 50);
   }
+  
+  // Turn top light off.
   state[0] = OffState;
-  displayStateForDuration(state, 65);
+  displayStateForDuration(state, 50);
 }
 
 void initializeDiodes() {
