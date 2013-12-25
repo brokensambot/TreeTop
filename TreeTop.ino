@@ -23,9 +23,47 @@ void setup() {
 }
 
 void loop() {
+  growAnimation();
   paintAnimation();
   warpAnimation(200);
   zipUnzipAnimation();
+}
+
+void growAnimation() {
+  DiodeState state[] = { OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState,
+                         OffState, OffState, OffState, OffState, OffState };
+  
+  // Turn center ring on.
+  for ( byte i = 3; i < diodeCount; i += 6 )
+    state[i] = OnState;
+  
+  displayStateForDuration(state, 100);
+  
+  // Turn first ring on.
+  for ( byte i = 2; i < diodeCount; i += 2 ) {
+    if ( i % 6 != 0 )
+      state[i] = OnState;
+  }
+  
+  displayStateForDuration(state, 100);
+  
+  // Turn second ring on.
+  for ( byte i = 1; i < diodeCount; i += 2 ) {
+    if ( i % 3 != 0 )
+      state[i] = OnState;
+  }
+  
+  displayStateForDuration(state, 100);
+  
+  // Turn outter ring on.
+  for ( byte i = 0; i < diodeCount; i += 6)
+    state[i] = OnState;
+  
+  displayStateForDuration(state, 100);
 }
 
 void paintAnimation() {
