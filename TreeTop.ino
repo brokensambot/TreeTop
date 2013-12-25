@@ -151,10 +151,6 @@ void zipUnzipAnimation() {
     state[i] = OffState;
     displayStateForDuration(state, 60);
   }
-  
-  // Turn top light off.
-  state[0] = OffState;
-  displayStateForDuration(state, 60);
 }
 
 void initializeDiodes() {
